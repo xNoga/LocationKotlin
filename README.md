@@ -59,7 +59,16 @@ override fun onConnected(p0: Bundle?) {
     }
 ```
 Here we still need to check if mLastLocation is null because the user could have location services turned off on their device. If that is the case the location will be null. 
-This is maybe not the right solution. We originally set the locations to null an therefore we had to check if the location was null first. Now when we know the locations are never null (because of lateinit) we could instead check if the user had given us permission to use location first, and then set the location. This step is not the correct way if you use lateinit. 
+This is maybe not the right solution. We originally set the locations to null an therefore we had to check if the location was null first. Now when we know the locations are never null (because of lateinit) we could instead check if the user had given us permission to use location first, and then set the location. This step is not the correct way if you use lateinit. But you should still use this part:
+```Kotlin
+else {
+                ActivityCompat.requestPermissions(this@MainActivity,
+                        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                        1)
+            }
+```
+This will make the phone show a dialog box where the user can activate location services for the app.
+
 Now you have the users location in the property mLastLocation. In the example above we use this to set the value in a companion object in another class. 
 
 
